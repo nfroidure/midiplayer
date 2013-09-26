@@ -1,4 +1,4 @@
-// MIDIFile : Read (and soon edit) a MIDI file in a given ArrayBuffer
+// MIDIPlayer : Play MIDI files
 
 // AMD + global + NodeJS : You can use this object by inserting a script
 // or using an AMD loader (like RequireJS) or using NodeJS

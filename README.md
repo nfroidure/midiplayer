@@ -19,7 +19,9 @@ define(['./libs/midiplayer/src/MIDIPlayer', './libs/midifile/src/MIDIFile'],
 		var midiPlayer=new MIDIPlayer({'output':midiAccess.outputs()[0]});
 
 		// creating the MidiFile instance from a buffer (view MIDIFile README)
-		midiFile=new MIDIFile(buffer);
+		var midiFile=new MIDIFile(buffer);
+
+		// Loading the midiFile instance in the player
 		midiPlayer.load(midiFile);
 
 		// Playing
