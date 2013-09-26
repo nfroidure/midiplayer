@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html manifest="application.manifest">
+<head>
+	<meta charset="utf-8" />
+	<title>Sample Basic MIDI Player</title>
+	<meta name="decription" cvalue="A simple MIDI files player to illustrate MIDIPlayer.js.">
+ <!-- WebMidiAPI polyfill -->
+ <script src='http://cwilso.github.com/WebMIDIAPIShim/WebMIDIAPI.js'></script>
+ <!-- MIDIFile -->
+ <script src="http://rest4.org/github/nfroidure/MIDIFile/master/src/MIDIEvents.js" type="text/javascript"></script>
+ <script src="http://rest4.org/github/nfroidure/MIDIFile/master/src/MIDIFileTrack.js" type="text/javascript"></script>
+ <script src="http://rest4.org/github/nfroidure/MIDIFile/master/src/MIDIFileHeader.js" type="text/javascript"></script>
+ <script src="http://rest4.org/github/nfroidure/MIDIFile/master/src/MIDIFile.js" type="text/javascript"></script>
+ <!-- MIDIPlayer -->
+ <script src="http://rest4.org/github/nfroidure/MIDIPlayer/master/src/MIDIPlayer.js" type="text/javascript"></script>
+</head>
+<body>
+	<div class="app">
+		<h1>MIDIPlayer.js &amp; WEBMIDI API based MIDI player</h1>
+		<p>
+			In order to test this MIDI player, you must download the
+			<a href="http://jazz-soft.net/download/Jazz-Plugin/">Jazz Midi Plugin</a>.
+		</p>
+		<p>
+			<label>Pick a MIDI file:
+			<input type="file" onchange="readFile(this)" accept="audio/x-midi" /></label><br />
+			<label>or choose one :
+				<select onchange="downloadFile(this)">
+					<option value=""></option>
+					<option value="SampleMountainman.mid">SampleMountainman.mid</option>
+					<option value="MIDIOkFormat0.mid">MIDIOkFormat0.mid</option>
+					<option value="MIDIOkFormat1.mid">MIDIOkFormat1.mid</option>
+					<option value="MIDIOkFormat2.mid">MIDIOkFormat2.mid</option>
+					<option value="MIDIOkFormat1-lyrics.mid">MIDIOkFormat1-lyrics.mid</option>
+					<option value="MIDIBadTrackHdr.mid">MIDIBadTrackHdr.mid</option>
+					<option value="MIDIBadHeaderLength.mid">MIDIBadHeaderLength.mid </option>
+					<option value="MIDIBadHeaderChunk.mid">MIDIBadHeaderChunk.mid</option>
+					<option value="MIDIBadHeaderSMTPE.mid">MIDIBadHeaderSMTPE.mid</option>
+					<option value="MIDIBadTrackLength.mid">MIDIBadTrackLength.mid</option>
+					<option value="MIDIBadHeaderFormat.mid">MIDIBadHeaderFormat.mid</option>
+					<option value="MIDIBadHeaderTracksNum.mid">MIDIBadHeaderTracksNum.mid</option>
+				</select>
+			</label>
+		</p>
+	</div>
+	<script type="text/javascript">
+		var midiAccess, midiPlayer;
+		// Requesting Midi Access
+		navigator.requestMIDIAccess().then( function onsuccesscallback( access ) {
+		  midiAccess = access;
+		},function onerrorcallback( err ) {
+		  console.log("uh-oh! Something went wrong!  Error code: " + err.code );
+		});
+
+		// File handlers
+		function readFile(input) {
+			var reader = new FileReader();
+			reader.readAsArrayBuffer(input.files[0]);
+			reader.onloadend=function(event) {
+				playFile(event.target.result);
+   		}
+   	}
+		function downloadFile(input) {
+			if(!input.value)
+				return;
+			var oReq = new XMLHttpRequest();
+			oReq.open("GET", "http://rest4.org/github/nfroidure/MIDIFile/master/sounds/"+input.value, true);
+			oReq.responseType = "arraybuffer";
+			oReq.onload = function (oEvent) {
+				playFile(oReq.response);
+			};
+			oReq.send(null);
+   	}
+
+		// Player
+		function playFile(buffer) {
+			// testing output
+			if(midiAccess) {
+
+				// Stopping previous play if exists
+				if(midiPlayer) {
+					midiPlayer.stop();
+				}
+
+				// Creating player
+				midiPlayer=new MIDIPlayer({'output':midiAccess.outputs()[0]});
+
+				// creating the MidiFile instance from a buffer (view MIDIFile README)
+				midiFile=new MIDIFile(buffer);
+				midiPlayer.load(midiFile);
+
+				// Playing
+				midiPlayer.play(function() {
+					console.log('Play ended.');
+				});
+				console.log('Playing.');
+
+			} else {
+				console.log('No access to MIDI output.');
+			}
+		}
+	</script>
+</body>
+</html>

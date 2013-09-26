@@ -37,7 +37,7 @@ define(['./libs/midiplayer/src/MIDIPlayer', './libs/midifile/src/MIDIFile'],
 		midiPlayer.resume();
 
 		// Stopping
-		midiPlayer.resume();
+		midiPlayer.stop();
 
 		// Playing again and loop
 		midiPlayer.play(function playCallback() {
@@ -51,8 +51,8 @@ define(['./libs/midiplayer/src/MIDIPlayer', './libs/midifile/src/MIDIFile'],
 });
 ```
 
-You can also simply add script tags to your HTML document and use MIDIPayer
- consstructor from the global scope like [in this sample]().
+You can also simply add script tags to your HTML document and use MIDIPlayer
+ consstructor from the global scope like [in this sample](http://rest4.org/github/nfroidure/MIDIPlayer/master/tests/index.html).
 
 License
 -------
