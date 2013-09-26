@@ -5,8 +5,11 @@
 (function(root,define){ define(['./libs/midifile/src/MIDIEvents'], function(MIDIEvents) {
 // START: Module logic start
 
-	var PLAY_BUFFER_DELAY=600;
+	// Constants
+	var PLAY_BUFFER_DELAY=300,
+		PAGE_HIDDEN_BUFFER_RATIO=20;
 
+	// MIDIPlayer constructor
 	function MIDIPlayer(options) {
 		options=options||{};
 		this.output=options.output||null; // midi output
@@ -40,10 +43,12 @@
 	};
 
 	MIDIPlayer.prototype.processPlay = function() {
-		var elapsedTime=performance.now()-this.startTime;
-		var event, karaoke, param2;
+		var elapsedTime=performance.now()-this.startTime, event, karaoke, param2,
+			bufferDelay=PLAY_BUFFER_DELAY*(document.hidden||document.mozHidden
+				||document.webkitHidden||document.msHidden||document.oHidden?
+					PAGE_HIDDEN_BUFFER_RATIO:1);
 		event=this.events[this.position];
-		while(this.events[this.position]&&event.playTime-elapsedTime<PLAY_BUFFER_DELAY) {
+		while(this.events[this.position]&&event.playTime-elapsedTime<bufferDelay) {
 			param2=0;
 			if(event.subtype==MIDIEvents.EVENT_MIDI_NOTE_ON) {
 				param2=Math.floor(event.param1*((this.volume||1)/100));
