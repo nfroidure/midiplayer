@@ -41,10 +41,11 @@
 		</p>
 	</div>
 	<script type="text/javascript">
-		var midiAccess, midiPlayer;
+		var midiAccess, midiPlayer, outputs;
 		// Requesting Midi Access
 		navigator.requestMIDIAccess().then( function onsuccesscallback( access ) {
-		  midiAccess = access;
+		  outputs = access.outputs();
+		  console.log(outputs);
 		},function onerrorcallback( err ) {
 		  console.log("uh-oh! Something went wrong!  Error code: " + err.code );
 		});
@@ -72,7 +73,7 @@
 		// Player
 		function playFile(buffer) {
 			// testing output
-			if(midiAccess) {
+			if(outputs) {
 
 				// Stopping previous play if exists
 				if(midiPlayer) {
@@ -80,7 +81,7 @@
 				}
 
 				// Creating player
-				midiPlayer=new MIDIPlayer({'output':midiAccess.outputs()[0]});
+				midiPlayer=new MIDIPlayer({'output':outputs[0]});
 
 				// creating the MidiFile instance from a buffer (view MIDIFile README)
 				midiFile=new MIDIFile(buffer);

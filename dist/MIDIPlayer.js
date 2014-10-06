@@ -562,7 +562,7 @@ MIDIPlayer.prototype.processPlay = function() {
 			}
 		}
 		this.output.send(
-		  MIDIEvents.MIDI_1PARAM_EVENTS.indexOf(event.subtype) ?
+		  -1 != MIDIEvents.MIDI_1PARAM_EVENTS.indexOf(event.subtype) ?
 		  [(event.subtype<<4) + event.channel, event.param1] :
 		  [(event.subtype<<4) + event.channel, event.param1, (param2 || event.param2 || 0x00)],
 			Math.floor(event.playTime+this.startTime)
