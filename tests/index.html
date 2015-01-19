@@ -81,7 +81,7 @@
 				}
 
 				// Creating player
-				midiPlayer=new MIDIPlayer({'output':outputs[0]});
+				midiPlayer=new MIDIPlayer({'output':outputs[prompt('Choose output:', outputs.length)]});
 
 				// creating the MidiFile instance from a buffer (view MIDIFile README)
 				midiFile=new MIDIFile(buffer);
