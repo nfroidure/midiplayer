@@ -21,21 +21,8 @@
 		<p>
 			<label>Pick a MIDI file:
 			<input type="file" onchange="readFile(this)" accept="audio/x-midi" /></label><br />
-			<label>or choose one :
-				<select onchange="downloadFile(this)">
-					<option value=""></option>
-					<option value="SampleMountainman.mid">SampleMountainman.mid</option>
-					<option value="MIDIOkFormat0.mid">MIDIOkFormat0.mid</option>
-					<option value="MIDIOkFormat1.mid">MIDIOkFormat1.mid</option>
-					<option value="MIDIOkFormat2.mid">MIDIOkFormat2.mid</option>
-					<option value="MIDIOkFormat1-lyrics.mid">MIDIOkFormat1-lyrics.mid</option>
-					<option value="MIDIBadTrackHdr.mid">MIDIBadTrackHdr.mid</option>
-					<option value="MIDIBadHeaderLength.mid">MIDIBadHeaderLength.mid </option>
-					<option value="MIDIBadHeaderChunk.mid">MIDIBadHeaderChunk.mid</option>
-					<option value="MIDIBadHeaderSMTPE.mid">MIDIBadHeaderSMTPE.mid</option>
-					<option value="MIDIBadTrackLength.mid">MIDIBadTrackLength.mid</option>
-					<option value="MIDIBadHeaderFormat.mid">MIDIBadHeaderFormat.mid</option>
-					<option value="MIDIBadHeaderTracksNum.mid">MIDIBadHeaderTracksNum.mid</option>
+			<label>Choose output
+				<select id="inputportselector">
 				</select>
 			</label>
 		</p>
@@ -44,8 +31,18 @@
 		var midiAccess, midiPlayer, outputs;
 		// Requesting Midi Access
 		navigator.requestMIDIAccess().then( function onsuccesscallback( access ) {
-		  outputs = access.outputs();
-		  console.log(outputs);
+		  outputs = access.outputs;
+      var iter = outputs.values();
+      var output;
+      while(output = iter.next()) {
+        if(output.done) {
+          break;
+        }
+        var opt = document.createElement("option");
+        opt.value = output.value.id;
+        opt.text = output.value.name;
+        document.getElementById("inputportselector").add(opt);
+      }
 		},function onerrorcallback( err ) {
 		  console.log("uh-oh! Something went wrong!  Error code: " + err.code );
 		});
@@ -62,7 +59,7 @@
 			if(!input.value)
 				return;
 			var oReq = new XMLHttpRequest();
-			oReq.open("GET", "http://rest4.org/github/nfroidure/MIDIFile/master/sounds/"+input.value, true);
+			oReq.open("GET", "http://github.com/nfroidure/MIDIFile/master/sounds/"+input.value, true);
 			oReq.responseType = "arraybuffer";
 			oReq.onload = function (oEvent) {
 				playFile(oReq.response);
@@ -72,16 +69,18 @@
 
 		// Player
 		function playFile(buffer) {
+  		var outputKeys = [];
 			// testing output
 			if(outputs) {
-
 				// Stopping previous play if exists
 				if(midiPlayer) {
 					midiPlayer.stop();
 				}
 
 				// Creating player
-				midiPlayer=new MIDIPlayer({'output':outputs[prompt('Choose output:', outputs.length)]});
+				midiPlayer=new MIDIPlayer({'output':outputs.get(
+				  document.getElementById("inputportselector").value
+				)});
 
 				// creating the MidiFile instance from a buffer (view MIDIFile README)
 				midiFile=new MIDIFile(buffer);

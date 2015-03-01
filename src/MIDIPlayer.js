@@ -17,6 +17,7 @@ function MIDIPlayer(options) {
 		this.notesOn[i] = [];
 	}
 	this.midiFile = null;
+	window.addEventListener('unload', this.stop.bind(this));
 }
 
 // Parsing all tracks and add their events in a single event queue
