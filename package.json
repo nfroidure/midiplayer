@@ -7,7 +7,8 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify src/MIDIPlayer.js -o dist/MIDIPlayer.js -s MIDIPlayer"
   },
   "repository": {
     "type": "git",
@@ -20,13 +21,13 @@
   "author": "Nicolas Froidure",
   "license": "MIT",
   "dependencies": {
-    "midievents": "^0.1.0"
+    "midievents": "^1.0.0"
   },
   "devDependencies": {
     "mocha": "~2.1.0",
-    "mocha-lcov-reporter": "0.0.1",
+    "mocha-lcov-reporter": "0.0.2",
     "coveralls": "~2.11.2",
-    "istanbul": "~0.3.5",
-    "browserify": "~8.1.1"
+    "istanbul": "~0.3.6",
+    "browserify": "~9.0.3"
   }
 }
