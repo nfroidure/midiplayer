@@ -5,7 +5,7 @@
 	<title>Sample Basic MIDI Player</title>
 	<meta name="decription" cvalue="A simple MIDI files player to illustrate MIDIPlayer.js.">
  <!-- WebMidiAPI polyfill -->
- <script src='http://cwilso.github.com/WebMIDIAPIShim/WebMIDIAPI.js'></script>
+ <script src='http://cwilso.github.io/WebMIDIAPIShim/lib/WebMIDIAPI.js'></script>
  <!-- MIDIFile: Repos folder must be in the same parent folder than the MIDIPlayer one -->
  <script src="../../MIDIFile/dist/MIDIFile.js" type="text/javascript"></script>
  <!-- MIDIPlayer -->
@@ -28,9 +28,11 @@
 		</p>
 	</div>
 	<script type="text/javascript">
-		var midiAccess, midiPlayer, outputs;
+		var midiAccess;
+		var midiPlayer;
+		var outputs;
 		// Requesting Midi Access
-		navigator.requestMIDIAccess().then( function onsuccesscallback( access ) {
+		navigator.requestMIDIAccess().then(function onsuccesscallback(access) {
 		  outputs = access.outputs;
       var iter = outputs.values();
       var output;
@@ -43,15 +45,15 @@
         opt.text = output.value.name;
         document.getElementById("inputportselector").add(opt);
       }
-		},function onerrorcallback( err ) {
-		  console.log("uh-oh! Something went wrong!  Error code: " + err.code );
+		},function onerrorcallback(err) {
+		  console.log("uh-oh! Something went wrong!  Error code: " + err.code);
 		});
 
 		// File handlers
 		function readFile(input) {
 			var reader = new FileReader();
 			reader.readAsArrayBuffer(input.files[0]);
-			reader.onloadend=function(event) {
+			reader.onloadend = function(event) {
 				playFile(event.target.result);
    		}
    	}
@@ -59,9 +61,9 @@
 			if(!input.value)
 				return;
 			var oReq = new XMLHttpRequest();
-			oReq.open("GET", "http://github.com/nfroidure/MIDIFile/master/sounds/"+input.value, true);
+			oReq.open("GET", "http://github.com/nfroidure/MIDIFile/master/sounds/" + input.value, true);
 			oReq.responseType = "arraybuffer";
-			oReq.onload = function (oEvent) {
+			oReq.onload = function(oEvent) {
 				playFile(oReq.response);
 			};
 			oReq.send(null);
@@ -78,12 +80,12 @@
 				}
 
 				// Creating player
-				midiPlayer=new MIDIPlayer({'output':outputs.get(
+				midiPlayer = new MIDIPlayer({output: outputs.get(
 				  document.getElementById("inputportselector").value
 				)});
 
 				// creating the MidiFile instance from a buffer (view MIDIFile README)
-				midiFile=new MIDIFile(buffer);
+				midiFile = new MIDIFile(buffer);
 				midiPlayer.load(midiFile);
 
 				// Playing

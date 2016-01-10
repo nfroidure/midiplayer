@@ -8,7 +8,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify src/MIDIPlayer.js -o dist/MIDIPlayer.js -s MIDIPlayer"
+    "lint": "eslint src/*.js tests/*.js",
+    "preversion": "npm run lint",
+    "build": "browserify -s MIDIPlayer src/MIDIPlayer.js > dist/MIDIPlayer.js"
   },
   "repository": {
     "type": "git",
@@ -21,13 +23,11 @@
   "author": "Nicolas Froidure",
   "license": "MIT",
   "dependencies": {
-    "midievents": "^1.0.0"
+    "midievents": "^1.0.1"
   },
   "devDependencies": {
-    "mocha": "~2.1.0",
-    "mocha-lcov-reporter": "0.0.2",
-    "coveralls": "~2.11.2",
-    "istanbul": "~0.3.6",
-    "browserify": "~9.0.3"
+    "browserify": "^12.0.2",
+    "eslint": "^1.10.3",
+    "eslint-config-simplifield": "^1.2.0"
   }
 }
