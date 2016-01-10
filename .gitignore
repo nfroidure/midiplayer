@@ -1,0 +1,7 @@
+*~
+*.swp
+*.komodoproject
+node_modules/
+test/results
+.git
+.coveralls.yml
