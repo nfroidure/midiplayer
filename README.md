@@ -1,9 +1,11 @@
-MIDIPlayer
-============
-
-MIDIPlayer allows you to play MIDI files in your browser with the help of the
+# MIDIPlayer
+> MIDIPlayer allows you to play MIDI files in your browser with the help of the
  WebMIDIAPI.
- 
+
+[![NPM version](https://badge.fury.io/js/midiplayer.svg)](https://npmjs.org/package/midiplayer)
+[![Dependency Status](https://david-dm.org/nfroidure/midiplayer.svg)](https://david-dm.org/nfroidure/midiplayer)
+[![devDependency Status](https://david-dm.org/nfroidure/midiplayer/dev-status.svg)](https://david-dm.org/nfroidure/midifile#info=devDependencies)
+
 MIDIPlayer can be used either in modern browsers
  ([pick the last bundle](https://github.com/nfroidure/MIDIPlayer/blob/master/dist/MIDIPlayer.js))
  or with NodeJS by installing the following
@@ -11,11 +13,10 @@ MIDIPlayer can be used either in modern browsers
 ```bash
 npm install midiplayer
 ```
- 
+
 This player is used for this [MIDI Karaoke Player](http://midiwebkaraoke.com)
 
-Usage
--------------
+## Usage
 ```js
 //Require MIDIPlayer and MIDIFile modules
 var MIDIPlayer = require('midiplayer');
@@ -38,7 +39,7 @@ navigator.requestMIDIAccess().then(function(midiAccess) {
 	midiPlayer.play(function() {
 		console.log('Play ended');
 	});
-	
+
 	// Volume
 	midiPlayer.volume = 80; // in percent
 
@@ -55,12 +56,11 @@ navigator.requestMIDIAccess().then(function(midiAccess) {
 	midiPlayer.play(function playCallback() {
 		midiPlayer.play(playCallback);
 	});
-	
+
 }, function() {
 	console.log('No midi output');
 });
 ```
 
-License
--------
+## License
 Copyright Nicolas Froidure 2013. MIT licence.
