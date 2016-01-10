@@ -1,6 +1,6 @@
 {
   "name": "midiplayer",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "Play MIDI files in your browser with the WebMIDIAPI",
   "main": "src/MIDIPlayer.js",
   "directories": {
