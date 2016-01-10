@@ -40,13 +40,13 @@
         if(output.done) {
           break;
         }
-        var opt = document.createElement("option");
+        var opt = document.createElement('option');
         opt.value = output.value.id;
         opt.text = output.value.name;
-        document.getElementById("inputportselector").add(opt);
+        document.getElementById('inputportselector').add(opt);
       }
 		},function onerrorcallback(err) {
-		  console.log("uh-oh! Something went wrong!  Error code: " + err.code);
+		  console.log('uh-oh! Something went wrong!  Error code: ' + err.code);
 		});
 
 		// File handlers
@@ -61,8 +61,8 @@
 			if(!input.value)
 				return;
 			var oReq = new XMLHttpRequest();
-			oReq.open("GET", "http://github.com/nfroidure/MIDIFile/master/sounds/" + input.value, true);
-			oReq.responseType = "arraybuffer";
+			oReq.open('GET', 'http://github.com/nfroidure/MIDIFile/master/sounds/' + input.value, true);
+			oReq.responseType = 'arraybuffer';
 			oReq.onload = function(oEvent) {
 				playFile(oReq.response);
 			};
@@ -81,7 +81,7 @@
 
 				// Creating player
 				midiPlayer = new MIDIPlayer({output: outputs.get(
-				  document.getElementById("inputportselector").value
+				  document.getElementById('inputportselector').value
 				)});
 
 				// creating the MidiFile instance from a buffer (view MIDIFile README)
