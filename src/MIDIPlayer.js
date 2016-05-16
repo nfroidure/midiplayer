@@ -2,6 +2,9 @@
 
 var MIDIEvents = require('midievents');
 
+// load a performance.now implementation if running on node.
+if (global) global.performance = {now: require('performance-now')};
+
 // Constants
 var PLAY_BUFFER_DELAY = 300;
 var PAGE_HIDDEN_BUFFER_RATIO = 20;
@@ -12,6 +15,12 @@ function MIDIPlayer(options) {
 
   options = options || {};
   this.output = options.output || null; // midi output
+
+  // if a node-midi output is passed in, the output
+  // method is sendMessage, rather than send.
+  // https://github.com/justinlatimer/node-midi
+  this.output.send = this.output.send || this.output.sendMessage;
+
   this.volume = options.volume || 100; // volume in percents
   this.startTime = -1; // ms since page load
   this.pauseTime = -1; // ms elapsed before player paused
@@ -21,7 +30,6 @@ function MIDIPlayer(options) {
     this.notesOn[i] = [];
   }
   this.midiFile = null;
-  window.addEventListener('unload', this.stop.bind(this));
 }
 
 // Parsing all tracks and add their events in a single event queue
@@ -47,6 +55,10 @@ MIDIPlayer.prototype.processPlay = function() {
   var event;
   var index;
   var param2;
+
+  // window.document is undefined on node
+  var document = document || {};
+
   var bufferDelay = PLAY_BUFFER_DELAY * (
     document.hidden || document.mozHidden || document.webkitHidden ||
       document.msHidden || document.oHidden ?
