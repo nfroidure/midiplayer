@@ -14,7 +14,7 @@ MIDIPlayer can be used either in modern browsers
 npm install midiplayer
 ```
 
-This player is used for this [MIDI Karaoke Player](http://midiwebkaraoke.com)
+This player is used for this [MIDI Karaoke Player](https://karaoke.insertafter.com/)
 
 ## Usage
 ```js
